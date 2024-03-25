@@ -7,13 +7,19 @@ import {
 
 import { program, DEPLOYER } from '../constants';
 import { RaydiumPosition } from '../position';
+import { sendTx } from '../multisign';
+
+//NFTs
+// BEP2EPMSRd3NDuA98bVGYjcZhUrUTz6H9mz5ZUJ8ah17
+// 831cbmr4q2skxC8qmT4ERV3mYutgjZMqeZ3wTddz1Gfs
+// 57YrHj1o5fzcD6AryFY8eagWXVQPT7p4z228SitWXrpj
 
 async function lockPosition() {
   const duration = 10 * 60;
   const allowFeeClaim = true;
   const user = DEPLOYER.publicKey;
   const { positionNftMint } = await new RaydiumPosition(
-    'BGWnUDaniqEzUbz8yFuef7KuAyvSEzJeBhNnnSvQTsYs'
+    'BEP2EPMSRd3NDuA98bVGYjcZhUrUTz6H9mz5ZUJ8ah17'
   ).getAccounts();
 
   const [locker] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -24,7 +30,7 @@ async function lockPosition() {
   const nftVault = getAssociatedTokenAddressSync(positionNftMint, locker, true);
   const nftTokenAccount = getAssociatedTokenAddressSync(positionNftMint, user, false);
 
-  const txId = await program.methods
+  const ix = await program.methods
     .lockPosition(duration, allowFeeClaim)
     .accounts({
       user,
@@ -36,8 +42,9 @@ async function lockPosition() {
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       systemProgram: anchor.web3.SystemProgram.programId,
     })
-    .signers([DEPLOYER])
-    .rpc();
+    .instruction();
+
+  const txId = await sendTx(DEPLOYER, [ix]);
 
   console.log('-----Position Locked Successfully-------');
   console.log('txId => ', txId);

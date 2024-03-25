@@ -7,6 +7,7 @@ import {
 
 import { program, DEPLOYER, raydiumProgramId } from '../constants';
 import { RaydiumPosition } from '../position';
+import { sendTx } from '../multisign';
 
 async function claimFees() {
   const user = DEPLOYER.publicKey;
@@ -39,7 +40,7 @@ async function claimFees() {
   const recipientTokenAccount0 = getAssociatedTokenAddressSync(tokenMint0, receiver, true);
   const recipientTokenAccount1 = getAssociatedTokenAddressSync(tokenMint1, receiver, true);
 
-  const txId = await program.methods
+  const ix = await program.methods
     .claimFees()
     .accounts({
       user,
@@ -61,10 +62,10 @@ async function claimFees() {
       raydiumClmmProgram: raydiumProgramId,
       tokenProgram: TOKEN_PROGRAM_ID,
       tokenProgram2022: TOKEN_2022_PROGRAM_ID,
-      systemProgram: anchor.web3.SystemProgram.programId,
     })
-    .signers([DEPLOYER])
-    .rpc();
+    .instruction();
+
+  const txId = await sendTx(DEPLOYER, [ix]);
 
   console.log('-----Fees Claimed Successfully-------');
   console.log('txId => ', txId);

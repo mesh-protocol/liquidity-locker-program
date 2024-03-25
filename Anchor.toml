@@ -5,10 +5,13 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-liquidity_locker = "HxXkV8UgTmgQmu3bvGUQkXM6V9JwMJeVSSB5JP2QFiRb"
+liquidity_locker = "LockgYZzP9P4AqsXU9jhLvnt88kefqJFeao7QKQRkCf"
 
 [programs.devnet]
-liquidity_locker = "HxXkV8UgTmgQmu3bvGUQkXM6V9JwMJeVSSB5JP2QFiRb"
+liquidity_locker = "LockgYZzP9P4AqsXU9jhLvnt88kefqJFeao7QKQRkCf"
+
+[programs.mainnet]
+liquidity_locker = "LockgYZzP9P4AqsXU9jhLvnt88kefqJFeao7QKQRkCf"
 
 [registry]
 url = "https://api.apr.dev"
@@ -17,7 +20,10 @@ url = "https://api.apr.dev"
 #cluster = "Localnet"
 #wallet = "/home/bilal/.config/solana/id.json"
 
-cluster = "devnet"
+#cluster = "devnet"
+#wallet = "./deployer.json"
+
+cluster = "mainnet"
 wallet = "./deployer.json"
 
 [scripts]

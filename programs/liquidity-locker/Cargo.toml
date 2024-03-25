@@ -19,4 +19,4 @@ default = []
 anchor-lang = "0.29.0"
 anchor-spl = "0.29.0"
 spl-memo = "4.0.0"
-raydium-amm-v3 = {git = "https://github.com/mesh-protocol/raydium-clmm", branch = "master", features = ["cpi", "devnet"]}
+raydium-amm-v3 = {git = "https://github.com/mesh-protocol/raydium-clmm", branch = "master", features = ["cpi"]}

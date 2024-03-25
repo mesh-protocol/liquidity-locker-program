@@ -5,7 +5,7 @@ pub mod state;
 pub mod errors;
 
 use crate::instructions::*;
-declare_id!("HxXkV8UgTmgQmu3bvGUQkXM6V9JwMJeVSSB5JP2QFiRb");
+declare_id!("LockgYZzP9P4AqsXU9jhLvnt88kefqJFeao7QKQRkCf");
 
 #[program]
 pub mod liquidity_locker {

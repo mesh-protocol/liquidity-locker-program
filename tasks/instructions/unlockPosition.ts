@@ -7,11 +7,12 @@ import {
 
 import { program, DEPLOYER } from '../constants';
 import { RaydiumPosition } from '../position';
+import { sendTx } from '../multisign';
 
 async function unlockPosition() {
   const user = DEPLOYER.publicKey;
   const { positionNftMint } = await new RaydiumPosition(
-    'BGWnUDaniqEzUbz8yFuef7KuAyvSEzJeBhNnnSvQTsYs'
+    '58HNqcQGiGsS2kwNvFR8EsAD34PmqjaUzdAh7sf9vHm7'
   ).getAccounts();
 
   const [locker] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -22,7 +23,7 @@ async function unlockPosition() {
   const nftVault = getAssociatedTokenAddressSync(positionNftMint, locker, true);
   const nftTokenAccount = getAssociatedTokenAddressSync(positionNftMint, user, true);
 
-  const txId = await program.methods
+  const ix = await program.methods
     .unlockPosition()
     .accounts({
       user,
@@ -34,8 +35,9 @@ async function unlockPosition() {
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       systemProgram: anchor.web3.SystemProgram.programId,
     })
-    .signers([DEPLOYER])
-    .rpc();
+    .instruction();
+
+  const txId = await sendTx(DEPLOYER, [ix]);
 
   console.log('-----Position Unlocked Successfully-------');
   console.log('txId => ', txId);
